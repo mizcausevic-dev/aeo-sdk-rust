@@ -1,0 +1,26 @@
+[package]
+name = "aeo-protocol"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+description = "Rust SDK for the AEO Protocol v0.1 — parse, build, validate, and fetch AEO declaration documents."
+license = "AGPL-3.0"
+repository = "https://github.com/mizcausevic-dev/aeo-sdk-rust"
+homepage = "https://github.com/mizcausevic-dev/aeo-sdk-rust"
+documentation = "https://docs.rs/aeo-protocol"
+readme = "README.md"
+keywords = ["aeo", "well-known", "llm", "json-ld", "rag"]
+categories = ["api-bindings", "parsing", "web-programming"]
+
+[features]
+default = ["client"]
+client = ["dep:ureq"]
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+ureq = { version = "2", optional = true, default-features = false, features = ["json", "tls"] }
+
+[dev-dependencies]
+pretty_assertions = "1"
