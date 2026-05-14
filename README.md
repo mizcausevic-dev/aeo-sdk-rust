@@ -1,8 +1,10 @@
 # aeo-sdk-rust
 
-Rust SDK for the [AEO Protocol v0.1](https://github.com/mizcausevic-dev/aeo-protocol-spec) — parse, build, validate, and fetch AEO declaration documents.
-
 [![Crates.io](https://img.shields.io/crates/v/aeo-protocol.svg)](https://crates.io/crates/aeo-protocol)
+[![docs.rs](https://img.shields.io/docsrs/aeo-protocol.svg)](https://docs.rs/aeo-protocol)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
+Rust SDK for the [AEO Protocol v0.1](https://github.com/mizcausevic-dev/aeo-protocol-spec) — parse, build, validate, and fetch AEO declaration documents.
 
 ## Install
 
