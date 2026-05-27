@@ -1,0 +1,44 @@
+name: Publish to crates.io
+
+# Fires on a semver tag. Verifies the Cargo.toml version matches the tag, then
+# publishes to crates.io.
+#
+# REQUIRED REPO SECRET: CARGO_REGISTRY_TOKEN
+#   - Get a token at https://crates.io/settings/tokens
+#   - Add it as repo secret CARGO_REGISTRY_TOKEN under Settings → Secrets and variables → Actions
+#
+# crates.io Trusted Publishing (OIDC, no token) is available since 2025; if you've
+# configured a Trusted Publisher for this repo on crates.io, replace the publish
+# step's env block with:
+#   - uses: rust-lang/crates-io-auth-action@v1
+#     id: auth
+#   - run: cargo publish
+#     env: { CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }} }
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+  id-token: write   # for future OIDC trusted publishing
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Verify tag matches Cargo.toml version
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          PKG_VERSION=$(grep '^version = ' Cargo.toml | head -1 | cut -d '"' -f2)
+          if [ "$TAG" != "$PKG_VERSION" ]; then
+            echo "::error::Git tag ($TAG) does not match Cargo.toml version ($PKG_VERSION)"
+            exit 1
+          fi
+      - run: cargo publish --token ${CARGO_REGISTRY_TOKEN}
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
